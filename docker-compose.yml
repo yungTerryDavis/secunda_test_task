@@ -1,0 +1,13 @@
+services:
+  db:
+    image: "postgres:18.1"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: "secunda_db"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    volumes:
+      - pgdata_secunda:/var/lib/postgresql/18/docker
+volumes:
+  pgdata_secunda:
