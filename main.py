@@ -6,7 +6,7 @@ from init_database import is_db_data_present, populate_db
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI):  # pyright:ignore[reportUnusedParameter]
     async with async_session_maker() as session:
         if not await is_db_data_present(session):
             print("No data found. Populating DB...")

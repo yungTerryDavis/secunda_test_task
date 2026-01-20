@@ -11,4 +11,4 @@ async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
 
 class Base(AsyncAttrs, DeclarativeBase):
-    __abstract__ = True
+    __abstract__: bool = True
