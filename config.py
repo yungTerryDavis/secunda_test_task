@@ -8,6 +8,8 @@ class Settings(BaseSettings):
     DB_PORT: int
     DB_NAME: str
 
+    API_KEY: str
+
     model_config: SettingsConfigDict = SettingsConfigDict(env_file=".env")  # pyright:ignore[reportIncompatibleVariableOverride]
 
     def get_db_url(self) -> str:

@@ -4,7 +4,7 @@ from typing import Annotated
 from fastapi import Depends, FastAPI, Path, Query
 
 from database import async_session_maker
-from dependencies import area_query, get_service
+from dependencies import area_query, get_service, verify_api_key
 from init_database import is_db_data_present, populate_db
 from schemas import (
     BoxArea,
@@ -33,6 +33,7 @@ app = FastAPI(lifespan=lifespan)
 @app.get("/buildings/all")
 async def list_all_buildings(
     service: Annotated[SecundaService, Depends(get_service)],
+    _: Annotated[str, Depends(verify_api_key)],
 ) -> list[BuildingSchema]:
     return await service.list_all_buildings()
 
@@ -40,6 +41,7 @@ async def list_all_buildings(
 @app.get("/practices/all")
 async def list_all_practices(
     service: Annotated[SecundaService, Depends(get_service)],
+    _: Annotated[str, Depends(verify_api_key)],
 ) -> list[PracticeSchema]:
     return await service.list_all_practices()
 
@@ -47,6 +49,7 @@ async def list_all_practices(
 @app.get("/organizations/all")
 async def list_all_organizations(
     service: Annotated[SecundaService, Depends(get_service)],
+    _: Annotated[str, Depends(verify_api_key)],
 ) -> list[OrganizationSchema]:
     return await service.list_all_organizations()
 
@@ -56,6 +59,7 @@ async def list_all_organizations(
 async def list_organizations_in_building(
     building_id: Annotated[int, Path(gt=0)],
     service: Annotated[SecundaService, Depends(get_service)],
+    _: Annotated[str, Depends(verify_api_key)],
 ) -> list[OrganizationSchema]:
     return await service.list_organizations_in_building(building_id)
 
@@ -64,6 +68,7 @@ async def list_organizations_in_building(
 async def list_organizations_of_practice(
     practice_id: Annotated[int, Path(gt=0)],
     service: Annotated[SecundaService, Depends(get_service)],
+    _: Annotated[str, Depends(verify_api_key)],
 ) -> list[OrganizationSchema]:
     return await service.list_organizations_of_practice(practice_id)
 
@@ -72,6 +77,7 @@ async def list_organizations_of_practice(
 async def list_buildings_in_area(
     area: Annotated[BoxArea | CircleArea, Depends(area_query)],
     service: Annotated[SecundaService, Depends(get_service)],
+    _: Annotated[str, Depends(verify_api_key)],
 ) -> list[BuildingSchema]:
     return await service.list_buildings_in_area(area)
 
@@ -80,6 +86,7 @@ async def list_buildings_in_area(
 async def list_organizations_in_area(
     area: Annotated[BoxArea | CircleArea, Depends(area_query)],
     service: Annotated[SecundaService, Depends(get_service)],
+    _: Annotated[str, Depends(verify_api_key)],
 ) -> list[OrganizationSchema]:
     return await service.list_organizations_in_area(area)
 
@@ -88,6 +95,7 @@ async def list_organizations_in_area(
 async def get_organization(
     organization_id: Annotated[int, Path(gt=0)],
     service: Annotated[SecundaService, Depends(get_service)],
+    _: Annotated[str, Depends(verify_api_key)],
 ) -> OrganizationFullSchema:
     return await service.get_organization(organization_id)
 
@@ -96,6 +104,7 @@ async def get_organization(
 async def list_organizations_of_practice_recursively(
     practice_id: Annotated[int, Path(gt=0)],
     service: Annotated[SecundaService, Depends(get_service)],
+    _: Annotated[str, Depends(verify_api_key)],
 ) -> list[OrganizationSchema]:
     return await service.list_organizations_of_practice_recursively(practice_id)
 
@@ -104,5 +113,6 @@ async def list_organizations_of_practice_recursively(
 async def list_organizations_by_name_search(
     search: Annotated[str, Query(min_length=1)],
     service: Annotated[SecundaService, Depends(get_service)],
+    _: Annotated[str, Depends(verify_api_key)],
 ) -> list[OrganizationSchema]:
     return await service.search_organizations_by_name(search)
