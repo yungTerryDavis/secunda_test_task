@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import Depends, HTTPException, Query
 from fastapi.security.api_key import APIKeyHeader
 from sqlalchemy.ext.asyncio import AsyncSession
-from starlette.status import HTTP_403_FORBIDDEN, HTTP_422_UNPROCESSABLE_CONTENT
+from starlette.status import HTTP_401_UNAUTHORIZED, HTTP_422_UNPROCESSABLE_CONTENT
 
 from config import settings
 from database import get_db_session
@@ -64,6 +64,6 @@ api_key_header = APIKeyHeader(name="X-API-Key")
 def verify_api_key(api_key: Annotated[str, Depends(api_key_header)]):
     if api_key != settings.API_KEY:
         raise HTTPException(
-            HTTP_403_FORBIDDEN,
+            HTTP_401_UNAUTHORIZED,
             "Invalid API Key",
         )
