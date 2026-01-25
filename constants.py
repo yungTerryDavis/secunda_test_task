@@ -1,0 +1,1 @@
+EARTH_RADIUS: float = 6371  # km
