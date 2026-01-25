@@ -1,5 +1,5 @@
 services:
-  db:
+  secunda_db:
     image: "postgres:18.1"
     ports:
       - "5432:5432"
@@ -9,5 +9,24 @@ services:
       POSTGRES_PASSWORD: "postgres"
     volumes:
       - pgdata_secunda:/var/lib/postgresql/18/docker
+    # healthcheck:
+    #   test: ["CMD-SHELL", "pg_isready", "-U", "postgres", "-d", "secunda_db"]
+    #   interval: 5s
+    #   timeout: 5s
+    #   retries: 5
+  server:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DB_HOST: "secunda_db"
+      DB_PORT: "5432"
+      DB_USER: "postgres"
+      DB_PASSWORD: "postgres"
+      DB_NAME: "secunda_db"
+      API_KEY: "sup3rsecr3tapik3y"
+    depends_on:
+      - secunda_db
+        # condition: service_healthy
 volumes:
   pgdata_secunda:

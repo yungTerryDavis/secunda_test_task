@@ -1,4 +1,13 @@
 # Secunda Test
+## Launch
+Запуск для проверки тестового задания
+```sh
+docker-compose up
+```
+После этого сервер будет доступен по http://localhost:8000/
+Документация на http://localhost:8000/docs
+
+Если автоматически не соберется, можно вручную сбилдить Docker-образ, и указать в docker-compose image.
 ## Develop
 ### Dependencies
 Запуск БД
@@ -21,3 +30,4 @@ alembic upgrade head
 ```sh
 uvicorn main:app
 ```
+
