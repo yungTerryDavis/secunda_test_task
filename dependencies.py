@@ -20,10 +20,10 @@ def get_service(session: Annotated[AsyncSession, Depends(get_db_session)]):
 
 # -------------- Query Params --------------
 def box_query(
-    lat1: Annotated[float | None, Query(ge=-90, le=90)] = None,
-    lon1: Annotated[float | None, Query(ge=-180, le=180)] = None,
-    lat2: Annotated[float | None, Query(ge=-90, le=90)] = None,
-    lon2: Annotated[float | None, Query(ge=-180, le=180)] = None,
+    lat1: Annotated[float | None, Query(ge=-90, le=90, description="Широта 1-й точки прямоугольника")] = None,
+    lon1: Annotated[float | None, Query(ge=-180, le=180, description="Долгота 1-й точки прямоугольника")] = None,
+    lat2: Annotated[float | None, Query(ge=-90, le=90, description="Широта 2-й точки прямоугольника")] = None,
+    lon2: Annotated[float | None, Query(ge=-180, le=180, description="Долгота 2-й точки прямоугольника")] = None,
 ) -> BoxArea | None:
     if None in (lat1, lon1, lat2, lon2):
         return None
@@ -31,9 +31,9 @@ def box_query(
 
 
 def circle_query(
-    lat: Annotated[float | None, Query(ge=-90, le=90)] = None,
-    lon: Annotated[float | None, Query(ge=-180, le=180)] = None,
-    radius: Annotated[float | None, Query(ge=0)] = None,
+    lat: Annotated[float | None, Query(ge=-90, le=90, description="Широта центральной точки круга")] = None,
+    lon: Annotated[float | None, Query(ge=-180, le=180, description="Долгота центральной точки круга")] = None,
+    radius: Annotated[float | None, Query(ge=0, description="Радиус круга в километрах")] = None,
 ) -> CircleArea | None:
     if None in (lat, lon, radius):
         return None
