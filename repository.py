@@ -13,25 +13,25 @@ async def get_objects_count(session: AsyncSession, model: type[Base]) -> int:
 
 class Repository:
     def __init__(self, session: AsyncSession):
-        self.session: AsyncSession = session
+        self._session: AsyncSession = session
 
     async def list_buildings(self):
         stmt = select(Building)
-        return await self.session.scalars(stmt)
+        return (await self._session.scalars(stmt)).all()
 
     async def list_organizations(self):
         stmt = (
             select(Organization)
             .options(selectinload(Organization.practices))
         )
-        return await self.session.scalars(stmt)
+        return (await self._session.scalars(stmt)).all()
 
     async def list_practices(self):
         stmt = (
             select(Practice)
             .options(selectinload(Practice.organizations))
         )
-        return await self.session.scalars(stmt)
+        return (await self._session.scalars(stmt)).all()
 
     async def list_organizations_by_building_ids(self, building_ids: list[int]):
         stmt = (
@@ -39,7 +39,7 @@ class Repository:
             .where(Organization.building_id.in_(building_ids))
             .options(selectinload(Organization.practices))
         )
-        return await self.session.scalars(stmt)
+        return (await self._session.scalars(stmt)).all()
 
     async def list_organizations_by_practice_id(self, practice_id: int):
         stmt = (
@@ -51,7 +51,7 @@ class Repository:
                 selectinload(Organization.practices)
             )
         )
-        return await self.session.scalars(stmt)
+        return (await self._session.scalars(stmt)).all()
 
     async def get_organization(self, organization_id: int):
         stmt = (
@@ -62,7 +62,7 @@ class Repository:
                 selectinload(Organization.building)
             )
         )
-        return await self.session.scalar(stmt)
+        return await self._session.scalar(stmt)
 
     async def list_organizations_by_practice_id_recursively(self, practice_id: int):
         stmt = (
@@ -78,7 +78,7 @@ class Repository:
             .distinct()
             .options(selectinload(Organization.practices))
         )
-        return await self.session.scalars(stmt)
+        return (await self._session.scalars(stmt)).all()
 
     async def list_organizations_by_name_search(self, search_substr: str):
         stmt = (
@@ -86,4 +86,4 @@ class Repository:
             .where(Organization.name.ilike(f"%{search_substr}%"))
             .options(selectinload(Organization.practices))
         )
-        return await self.session.scalars(stmt)
+        return (await self._session.scalars(stmt)).all()
