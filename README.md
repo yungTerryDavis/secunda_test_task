@@ -4,7 +4,7 @@
 ```sh
 docker-compose up
 ```
-После этого сервер будет доступен по http://localhost:8000/
+После этого сервер будет доступен по http://localhost:8000/  
 Документация на http://localhost:8000/docs
 
 Если автоматически не соберется, можно вручную сбилдить Docker-образ, и указать в docker-compose image.
